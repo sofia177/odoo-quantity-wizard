@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Wizard form view ─────────────────────────────────────────────── -->
+    <record id="view_product_quantity_wizard_form" model="ir.ui.view">
+        <field name="name">product.quantity.wizard.form</field>
+        <field name="model">product.quantity.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Update / Set Product Quantity">
+
+                <sheet>
+
+                    <!-- Product header -->
+                    <div class="oe_title mb-3">
+                        <h4 class="text-muted mb-1">Product</h4>
+                        <h2>
+                            <field name="product_id" readonly="1"/>
+                        </h2>
+                        <span class="text-muted">
+                            Unit: <field name="product_uom_id" readonly="1" class="oe_inline"/>
+                        </span>
+                    </div>
+
+                    <group>
+
+                        <!-- Step 1: Operation -->
+                        <group string="Step 1 — Operation">
+                            <field name="operation" widget="radio"
+                                   options="{'horizontal': false}"/>
+                        </group>
+
+                        <!-- Step 2: Location (visible once operation is chosen) -->
+                        <group string="Step 2 — Location"
+                               invisible="not operation">
+                            <field name="location_set"
+                                   string="Specify a location?"
+                                   widget="boolean_toggle"/>
+                            <field name="location_id"
+                                   invisible="not location_set"
+                                   required="location_set"
+                                   options="{'no_create': True}"/>
+                        </group>
+
+                        <!-- Step 3: Quantity -->
+                        <group string="Step 3 — Quantity"
+                               invisible="not operation">
+                            <field name="quantity"/>
+                        </group>
+
+                    </group>
+
+                    <!-- Action description banner -->
+                    <div class="alert alert-info mt-3"
+                         invisible="not action_description">
+                        <field name="action_description" readonly="1"/>
+                    </div>
+
+                    <!-- Hidden helper fields (used by invisible attrs) -->
+                    <field name="show_location" invisible="1"/>
+                    <field name="show_quantity"  invisible="1"/>
+
+                </sheet>
+
+                <footer>
+                    <button name="action_apply"
+                            string="Apply"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not operation"/>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Action to open the wizard ───────────────────────────────────── -->
+    <record id="action_product_quantity_wizard" model="ir.actions.act_window">
+        <field name="name">Update / Set Quantity</field>
+        <field name="res_model">product.quantity.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_product_quantity_wizard_form"/>
+        <field name="target">new</field>
+        <field name="context">{
+            'default_product_id': active_id,
+        }</field>
+    </record>
+
+</odoo>

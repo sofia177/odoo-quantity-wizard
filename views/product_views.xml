@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Inherit the product.product form to add an "Update / Set Quantity"
+        button in the action buttons area (top of the form).
+    -->
+    <record id="view_product_form_quantity_wizard_btn" model="ir.ui.view">
+        <field name="name">product.product.form.quantity.wizard</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+
+            <!-- Add the button next to the existing "Update Quantity" stat button -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="action"
+                        name="%(product_quantity_wizard.action_product_quantity_wizard)d"
+                        string="Quantity Wizard"
+                        class="oe_stat_button"
+                        icon="fa-cubes"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
