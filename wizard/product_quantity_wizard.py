@@ -216,13 +216,7 @@ class ProductQuantityWizard(models.TransientModel):#temporary wizard data
                     }).action_apply_inventory()
 
     def _do_update(self, location_set, qty):
-        """
-        UPDATE operation — four branches from the decision tree:
-          + location set   + qty > 0  → normal update
-          + location set   + qty < 0  → check availability then deduct
-          + no location    + qty > 0  → any location (first with stock, else WH/Stock)
-          + no location    + qty < 0  → available quantity (deduct from total)
-        """
+      
         Quant = self.env['stock.quant']
 
         if location_set:
